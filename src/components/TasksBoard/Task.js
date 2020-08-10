@@ -12,7 +12,7 @@ import {
 import Slider from "../Slider";
 
 const Task = memo(
-  ({ data, disabled, onAttachImages, onCompleteTask }) => {
+  ({ data, disabled, loading, onAttachImages, onCompleteTask }) => {
     const {
       createdAt,
       images,
@@ -53,12 +53,14 @@ const Task = memo(
             <Slider>
               <Uploader
                 onChange={handleImageUpload}
+                loading={loading}
                 disabled={disabled}
                 variant="photo"
               />
-
               {images.map(({ id, size_urls, resource_url }) => (
-                <Image key={id} src={size_urls?.small || resource_url} />
+                <Container key={id} component="figure">
+                  <Image src={size_urls?.small || resource_url} />
+                </Container>
               ))}
             </Slider>
           </Cell>

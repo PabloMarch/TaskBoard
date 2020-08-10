@@ -24,7 +24,6 @@ const StyleContainer = styled(Container)`
     background-color: ${props => props.theme.box.opacity};
     border-radius: ${props => props.theme.box.borderRadiusDense};
     margin: 10px 24px;
-    overflow: hidden;
     padding: 0 0 15px 22px;
   `}
 

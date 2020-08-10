@@ -1,8 +1,9 @@
 {
   "name": "saturn-test",
   "version": "1.0.0",
-  "description": "Frontend Position Test",
-  "main": "index.js",
+  "description": "Frontend Job Position Test",
+  "author": "Pablo Marchena",
+  "license": "ISC",
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -14,8 +15,10 @@
     "nextjs",
     "style-components"
   ],
-  "author": "Pablo Marchena",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bnb/metaverse.git"
+  },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "axios": "^0.19.2",
@@ -23,6 +26,7 @@
     "moment": "^2.27.0",
     "next": "^9.5.1",
     "next-fonts": "^1.4.0",
+    "overlayscrollbars": "^1.13.0",
     "overlayscrollbars-react": "^0.2.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

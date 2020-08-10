@@ -14,6 +14,8 @@ const Typography = ({ children, component, screenReader, ...rest }) => {
 // STYLES
 const StyledTypography = styled(Typography)`
   color: ${props => props.theme.colors.primary};
+  display: inline-block;
+  margin-bottom: 10px;
   
   /* error */
   ${props => props.error && css`
@@ -34,7 +36,13 @@ const StyledTypography = styled(Typography)`
     font-family: "${props => props.theme.fonts[0]}";
     font-size: ${props.theme.fontSizes.medium};
     line-height: 20px;
-    margin-bottom: 10px;
+  `}
+
+  ${props => props.component === "h2" && css`
+    display: block;
+    font-family: "${props => props.theme.fonts[1]}";
+    font-size: ${props.theme.fontSizes.small};
+    line-height: 20px;
   `}
 
   /* regular text */
@@ -44,8 +52,9 @@ const StyledTypography = styled(Typography)`
 
   /* disable on screen */
   ${props => props.screenReader && css`
-    position: absolute;
+    font-family: "${props => props.theme.fonts[1]}";
     left: -999em;
+    position: absolute;
   `}
 `;
 

@@ -2,13 +2,13 @@ import styled, { css } from "styled-components";
 import Input from "./Input";
 
 // COMPONENT
-const Uploader = (props) => (
+const Uploader = ({ loading, ...rest }) => (
   <Input
     accept="image/png, image/jpeg"
     multiple
     name="uploader"
     type="file"
-    {...props}
+    {...rest}
   />
 );
 
@@ -17,19 +17,17 @@ const StyleUploader = styled(Uploader)`
   /* photo variant */
   ${props => props.variant === "photo" && css`
     border-radius: ${props => props.theme.box.borderRadiusDense};
-    height: 74px;
+    height: ${props => props.theme.box.mediumSize};
     margin-right: 7px;
+    outline: none;
     position: relative;
-    transform-origin: 50%;
-    transition-duration: ${props => props.theme.effects.transitionDuration};
-    width: 75px;
+    width: ${props => props.theme.box.mediumSize};
 
     &::-webkit-file-upload-button {
       visibility: hidden;
     }
 
     &::before, &::after {
-      cursor: pointer;
       content: "";
       height: 100%;
       left: 0;
@@ -44,12 +42,33 @@ const StyleUploader = styled(Uploader)`
     }
 
     &::after {
-      background: url("/images/camera.svg") no-repeat 50% 50%;
+      background-image: url("/images/camera.svg");
+      background-repeat: no-repeat;
+      background-position: 50%;
+      transition-duration: ${props => props.theme.effects.transitionDuration};
+      transform-origin: 50%;
       z-index: 1;
     }
 
-    &:hover {
-      transform: scale(1.1);
+    &:hover::after {
+      transform: scale(1.2);
+    }
+  `}
+
+  /* disabled */
+  ${props => props.disabled && css`
+    cursor: not-allowed;
+    opacity: 0.2;
+  `}
+
+  /* loading variant */
+  ${props => props.loading && css`
+    cursor: wait;
+    opacity: 1;
+
+    &::after {
+      background-image: url("/images/loader.svg");
+      background-size: 35px;
     }
   `}
 `;

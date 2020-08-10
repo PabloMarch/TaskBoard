@@ -62,6 +62,7 @@ const TasksBoard = ({ data = [] }) => {
         <Task
           key={task.serverId}
           data={task}
+          loading={loading && currTaskIdRef.current === task.serverId}
           disabled={loading}
           onAttachImages={uploadImages}
           onCompleteTask={toggleComplete}

@@ -36,3 +36,5 @@ Build on ReactJS.16, NextJS, Styled-Components
   a central comment block &how you'd plan to handle them.
 - Implement a type-checker
 - Add some tests
+- Allow uploads from multiple tasks at same time
+- Fix image display proportions
