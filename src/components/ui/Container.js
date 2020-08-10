@@ -29,7 +29,7 @@ const StyleContainer = styled(Container)`
 
   /* header variant */
   ${props => props.component === "header" && css`
-    margin-bottom: 16px;
+    padding: 18px 0 16px;
   `}
 `;
 

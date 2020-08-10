@@ -130,7 +130,7 @@ const demoTasks = [
     dueSecondsSinceMidnight : 26340,
     isCompleted             : true,
     serverId                : 1258,
-    images                  : SAMPLES
+    images                  : []
   },
   {
     createdAt               : '2020-07-10T17:09:21.690824',
@@ -148,7 +148,7 @@ const demoTasks = [
     dueSecondsSinceMidnight : null,
     isCompleted             : false,
     serverId                : 1241,
-    images                  : []
+    images                  : SAMPLES
   }
 ];
 

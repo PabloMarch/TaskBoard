@@ -1,8 +1,9 @@
 import { memo } from "react";
+import styled from "styled-components";
 import {
   Container,
   Cell,
-  Date,
+  Time,
   Image,
   Input,
   Grid,
@@ -11,8 +12,9 @@ import {
 } from "@/ui";
 import Slider from "../Slider";
 
+// COMPONENT
 const Task = memo(
-  ({ data, disabled, loading, onAttachImages, onCompleteTask }) => {
+  ({ className, data, disabled, loading, onAttachImages, onCompleteTask }) => {
     const {
       createdAt,
       images,
@@ -36,18 +38,21 @@ const Task = memo(
     console.log("RENDER:Task:: ", serverId);
 
     return (
-      <Container component="article" variant="card" className="Task">
+      <Container component="article" variant="card" className={className}>
         <Grid columns={12}>
           <Cell width={12}>
-            <Container component="header">
-              <Typography component="h1" itemProp="headline">{title}</Typography>
-              <Date time={createdAt} itemProp="dateCreated" />
-              <Input
-                type="radio"
-                checked={isCompleted}
-                onClick={handleComplete}
-                readOnly
-              />
+            <Container component="header" className="header">
+              <Image alt="Task Detail" src="/images/computer.svg" />
+              <Container>
+                <Typography component="h1" itemProp="headline">{title}</Typography>
+                <Time time={createdAt} itemProp="dateCreated" />
+                <Input
+                  type="radio"
+                  checked={isCompleted}
+                  onClick={handleComplete}
+                  readOnly
+                />
+              </Container>
             </Container>
 
             <Slider>
@@ -70,4 +75,34 @@ const Task = memo(
   }
 );
 
-export default Task;
+// STYLES
+// TODO: remove nested classes reference
+const StyledTask = styled(Task)`
+  .header {
+    display: flex;
+    position: relative;
+
+    h1 {
+      margin-top: 0;
+    }
+
+    img {
+      margin-right: 17px;
+    }
+
+    time {
+      background-image: url("/images/bell.svg");
+      background-repeat: no-repeat;
+      background-position: 10px 50%;
+      padding-left: 30px;
+    }
+
+    label {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+  }
+`;
+
+export default StyledTask;

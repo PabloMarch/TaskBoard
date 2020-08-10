@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${props => props.theme.colors.contrast};
     font-family: "TTNorms";
     margin: 0;
-    padding: 0;
+    padding: 30px 0;
   }
 `;
 

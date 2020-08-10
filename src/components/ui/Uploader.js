@@ -17,9 +17,12 @@ const StyleUploader = styled(Uploader)`
   /* photo variant */
   ${props => props.variant === "photo" && css`
     border-radius: ${props => props.theme.box.borderRadiusDense};
+    cursor: pointer;
     height: ${props => props.theme.box.mediumSize};
     margin-right: 7px;
+    min-width: ${props => props.theme.box.mediumSize};
     outline: none;
+    overflow: hidden;
     position: relative;
     width: ${props => props.theme.box.mediumSize};
 
@@ -52,6 +55,10 @@ const StyleUploader = styled(Uploader)`
 
     &:hover::after {
       transform: scale(1.2);
+    }
+
+    input {
+      visibility: hidden;
     }
   `}
 
