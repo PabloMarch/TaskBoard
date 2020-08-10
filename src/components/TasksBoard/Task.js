@@ -119,7 +119,9 @@ const Task = memo(
 // TODO: remove nested classes reference
 const StyledTask = styled(Task)`
   .header {
+    align-items: flex-start;
     display: flex;
+    padding-right: 45px;
     position: relative;
 
     h1 {

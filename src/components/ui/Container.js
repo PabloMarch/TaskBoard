@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 // COMPONENT
-const Container = ({ children, card, component, ...rest }) => {
+const Container = ({ children, card, component, variant, ...rest }) => {
   const metadataProps = {};
   const Component = component || "div";
 
@@ -19,6 +19,12 @@ const Container = ({ children, card, component, ...rest }) => {
 
 // STYLES
 const StyleContainer = styled(Container)`
+  /* card variant */
+  ${props => props.variant === "wrapper" && css`
+    margin: 0 auto;
+    max-width: 680px;
+  `}
+
   /* card variant */
   ${props => props.variant === "card" && css`
     background-color: ${props => props.theme.box.opacity};

@@ -86,7 +86,7 @@ const TasksBoard = ({ data = [] }) => {
   // console.log("RENDER:TasksBoard");
 
   return (
-    <Container>
+    <Container variant="wrapper">
       <TaskHeader error={error} />
       {tasks.map(task => (
         <Task
