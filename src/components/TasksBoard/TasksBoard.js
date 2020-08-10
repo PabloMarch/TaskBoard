@@ -3,8 +3,9 @@ import { useEnhancedReducer, useImageUploader } from "@/lib";
 import { Container } from "@/ui";
 import reducer, {
   ADD_IMAGES,
-  REMOVE_IMAGES,
-  TOGGLE_COMPLETE
+  REMOVE_IMAGE,
+  TOGGLE_COMPLETE,
+  LOAD_STORAGE
 } from "./state";
 import Task from "./Task";
 import TaskHeader from "./TaskHeader";
@@ -36,6 +37,21 @@ const TasksBoard = ({ data = [] }) => {
     currTaskIdRef.current = id;
   }
 
+  // load cached images
+  const loadCachedImages = useCallback(
+    (taskId, images) => {
+      if (!images.length) return;
+      dispatch({
+        type: LOAD_STORAGE,
+        payload: {
+          taskId,
+          images
+        }
+      });
+    },
+    [dispatch]
+  );
+
   // upload images to Saturn API
   const uploadImages = useCallback(
     (taskId, files) => {
@@ -49,9 +65,8 @@ const TasksBoard = ({ data = [] }) => {
   // TODO: remove from DB
   const removeImage = useCallback(
     (taskId, imgId) => {
-      console.log("removeImage:: ", taskId, imgId);
       setCurrTask(taskId);
-      dispatch({ type: REMOVE_IMAGES, payload: { taskId, imgId } });
+      dispatch({ type: REMOVE_IMAGE, payload: { taskId, imgId } });
     },
     [dispatch]
   );
@@ -68,7 +83,7 @@ const TasksBoard = ({ data = [] }) => {
   );
 
   // just to check the renders
-  console.log("RENDER:TasksBoard");
+  // console.log("RENDER:TasksBoard");
 
   return (
     <Container>
@@ -80,6 +95,7 @@ const TasksBoard = ({ data = [] }) => {
           loading={loading && currTaskIdRef.current === task.serverId}
           disabled={loading}
           onAttachImages={uploadImages}
+          onLoadCachedImages={loadCachedImages}
           onDetachImage={removeImage}
           onCompleteTask={toggleComplete}
         />

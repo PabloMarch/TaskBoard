@@ -1,5 +1,6 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import styled from "styled-components";
+import { useLocalStorage, getStateFromLocalStorage } from "@/lib";
 import {
   Button,
   Container,
@@ -20,6 +21,7 @@ const Task = memo(
     data,
     disabled,
     loading,
+    onLoadCachedImages,
     onAttachImages,
     onDetachImage,
     onCompleteTask,
@@ -31,6 +33,25 @@ const Task = memo(
       serverId,
       title,
     } = data;
+    const [storedImage, storeTaskImages] = useLocalStorage(serverId, images);
+
+    // load images from local storage when app loads
+    useEffect(
+      () => {
+        const cachedImages = getStateFromLocalStorage(serverId);
+        if (!cachedImages) return;
+        onLoadCachedImages(serverId, cachedImages);
+      },
+      [serverId, onLoadCachedImages]
+    );
+
+    // store/remove image from localstorage when an image is updated
+    useEffect(
+      () => {
+        storeTaskImages(images);
+      },
+      [serverId, images, storedImage, storeTaskImages]
+    );
 
     // mark task as complete
     const handleComplete  = () => {
@@ -50,7 +71,7 @@ const Task = memo(
     };
 
     // just to check the renders
-    console.log("RENDER:Task:: ", serverId);
+    // console.log("RENDER:Task:: ", serverId);
 
     return (
       <Container component="article" variant="card" className={className}>
@@ -77,7 +98,7 @@ const Task = memo(
                 disabled={disabled}
                 variant="photo"
               />
-              {images.map(({ id, size_urls, resource_url }) => (
+              {storedImage.map(({ id, size_urls, resource_url }) => (
                 <Container key={id} component="figure">
                   <Button
                     icon="close"

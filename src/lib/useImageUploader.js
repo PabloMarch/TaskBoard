@@ -82,7 +82,7 @@ const useImageUploader = () => {
       //   type: "UPLOADED",
       //   payload: {
       //     image: {
-      //       "id":"5fceac02-ec85-41bb-9796-c3c712d8127a",
+      //       "id": uuidv4(),
       //       "content_type":"jpg",
       //       "metadata":null,
       //       "resource_url":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a.jpg",

@@ -1,5 +1,6 @@
 export const ADD_IMAGES = "ADD_IMAGES";
-export const REMOVE_IMAGES = "REMOVE_IMAGES";
+export const REMOVE_IMAGE = "REMOVE_IMAGE";
+export const LOAD_STORAGE = "LOAD_STORAGE";
 export const TOGGLE_COMPLETE = "TOGGLE_COMPLETE";
 
 // TODO: implment immer when app grows
@@ -40,7 +41,9 @@ const reducer = (state, action) => {
   switch (type) {
     case ADD_IMAGES:
       return addImagesToTask(state, payload);
-    case REMOVE_IMAGES:
+    case LOAD_STORAGE:
+      return addImagesToTask(state, payload);
+    case REMOVE_IMAGE:
       return removeImagesFromTask(state, payload);
     case TOGGLE_COMPLETE:
       return toggleCompleteTask(state, payload)
