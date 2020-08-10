@@ -14,6 +14,16 @@ function addImagesToTask(tasks, payload) {
   });
 };
 
+function removeImagesFromTask(tasks, payload) {
+  return tasks.map((task) => {
+    if (task.serverId !== payload.taskId) return task;
+    return {
+      ...task,
+      images: task.images.filter(img => img.id !== payload.imgId)
+    }
+  });
+};
+
 function toggleCompleteTask(tasks, payload) {
   return tasks.map((task) => {
     if (task.serverId !== payload.id) return task;
@@ -31,7 +41,7 @@ const reducer = (state, action) => {
     case ADD_IMAGES:
       return addImagesToTask(state, payload);
     case REMOVE_IMAGES:
-      return state;
+      return removeImagesFromTask(state, payload);
     case TOGGLE_COMPLETE:
       return toggleCompleteTask(state, payload)
     default:

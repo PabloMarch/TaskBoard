@@ -19,7 +19,6 @@ const StyleUploader = styled(Uploader)`
     border-radius: ${props => props.theme.box.borderRadiusDense};
     cursor: pointer;
     height: ${props => props.theme.box.mediumSize};
-    margin-right: 7px;
     min-width: ${props => props.theme.box.mediumSize};
     outline: none;
     overflow: hidden;
@@ -45,7 +44,7 @@ const StyleUploader = styled(Uploader)`
     }
 
     &::after {
-      background-image: url("/images/camera.svg");
+      background-image: url("/images/icons/camera.svg");
       background-repeat: no-repeat;
       background-position: 50%;
       transition-duration: ${props => props.theme.effects.transitionDuration};

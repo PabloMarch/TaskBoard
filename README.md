@@ -35,6 +35,9 @@ Build on ReactJS.16, NextJS, Styled-Components
   Explain the error states you see possible in the application in
   a central comment block &how you'd plan to handle them.
 - Implement a type-checker
+- Implement default props
 - Add some tests
 - Allow uploads from multiple tasks at same time
 - Fix image display proportions
+- Create centralize animations on theme and use `react-spring`
+- Adds comment the app

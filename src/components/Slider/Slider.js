@@ -31,22 +31,6 @@ const StyledSlider = styled(Slider)`
   .os-theme-light > .os-scrollbar > .os-scrollbar-track {
     background: ${props => props.theme.box.opacity};
   }
-
-  figure {
-    display: inline-flex;
-    height: ${props => props.theme.box.mediumSize};
-    padding-right: 7px;
-    margin: 0;
-    min-width: ${props => props.theme.box.mediumSize};
-    overflow: hidden;
-  }
-
-  img {
-    border-radius: ${props => props.theme.box.borderRadiusDense};
-    display: block;
-    height: ${props => props.theme.box.mediumSize};
-    width: ${props => props.theme.box.mediumSize};
-  }
 `;
 
 export default StyledSlider;

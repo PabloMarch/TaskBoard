@@ -1,6 +1,7 @@
 import { memo } from "react";
 import styled from "styled-components";
 import {
+  Button,
   Container,
   Cell,
   Time,
@@ -14,7 +15,15 @@ import Slider from "../Slider";
 
 // COMPONENT
 const Task = memo(
-  ({ className, data, disabled, loading, onAttachImages, onCompleteTask }) => {
+  ({
+    className,
+    data,
+    disabled,
+    loading,
+    onAttachImages,
+    onDetachImage,
+    onCompleteTask,
+  }) => {
     const {
       createdAt,
       images,
@@ -32,6 +41,12 @@ const Task = memo(
     const handleImageUpload = (evt) => {
       const { files } = evt.target;
       onAttachImages(serverId, files);
+    };
+
+    // unattach image from task
+    // TODO: remove from DB
+    const handleImageRemove = (imgId) => {
+      onDetachImage(serverId, imgId);
     };
 
     // just to check the renders
@@ -55,7 +70,7 @@ const Task = memo(
               </Container>
             </Container>
 
-            <Slider>
+            <Slider className="slider">
               <Uploader
                 onChange={handleImageUpload}
                 loading={loading}
@@ -64,6 +79,10 @@ const Task = memo(
               />
               {images.map(({ id, size_urls, resource_url }) => (
                 <Container key={id} component="figure">
+                  <Button
+                    icon="close"
+                    onClick={() => handleImageRemove(id)}
+                  />
                   <Image src={size_urls?.small || resource_url} />
                 </Container>
               ))}
@@ -91,7 +110,7 @@ const StyledTask = styled(Task)`
     }
 
     time {
-      background-image: url("/images/bell.svg");
+      background-image: url("/images/icons/bell.svg");
       background-repeat: no-repeat;
       background-position: 10px 50%;
       padding-left: 30px;
@@ -102,6 +121,42 @@ const StyledTask = styled(Task)`
       top: 15px;
       right: 15px;
     }
+  }
+
+  .slider {
+    /* TODO: remove dependency of .os-content */
+    .os-content > label {
+      margin: 8px 7px 0 0;
+    }
+
+    figure {
+      position: relative;
+      display: inline-flex;
+      height: ${props => props.theme.box.mediumSize};
+      margin: 0;
+      min-width: ${props => props.theme.box.mediumSize};
+      padding: 8px 7px 0 0;
+    }
+
+    button {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      transition-duration: ${props => props.theme.effects.transitionDuration};
+      transform-origin: 50%;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+
+    img {
+      border-radius: ${props => props.theme.box.borderRadiusDense};
+      display: block;
+      height: ${props => props.theme.box.mediumSize};
+      width: ${props => props.theme.box.mediumSize};
+    }
+
   }
 `;
 

@@ -1,4 +1,5 @@
 // export ui components
+export { default as Button } from "./Button";
 export { default as Container } from "./Container";
 export { default as Cell } from "./Cell";
 export { default as Time } from "./Time";

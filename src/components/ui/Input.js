@@ -13,6 +13,12 @@ const StyledInput = styled(Input)`
   /* radio button */
   ${props => props.type === "radio" && css`
     display: block;
+    transition-duration: ${props => props.theme.effects.transitionDuration};
+    transform-origin: 50%;
+
+    &:hover {
+      transform: scale(1.2);
+    }
 
     span {
       background: url("/images/radio-button.svg") no-repeat 50%;
