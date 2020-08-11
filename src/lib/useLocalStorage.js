@@ -1,21 +1,36 @@
 import { useState, useCallback } from 'react';
 
+// TODO: remove this validation an safely call from components
+const isServer = () => typeof window === 'undefined' && !window.localStorage;
+
+// get stored data from localstorage
 export const getStateFromLocalStorage = (key) => {
-  if (!window.localStorage) return;
-  const storage = localStorage.getItem(key);
-  if (storage) return JSON.parse(storage);
-  return null;
+  try {
+    if (isServer()) return;
+    const storage = localStorage.getItem(key);
+    if (storage) return JSON.parse(storage);
+    return null;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
+// store data from localstorage
 export const storeStateInLocalStorage = (key, state) => {
-  if (!window.localStorage) return;
-  window.localStorage.setItem(key, JSON.stringify(state));
-  console.log(localStorage);
+  try {
+    if (isServer()) return;
+    window.localStorage.setItem(key, JSON.stringify(state));
+    console.log(localStorage);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
+// HOOK
 function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
     try {
+      if (isServer()) return;
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
@@ -27,7 +42,7 @@ function useLocalStorage(key, initialValue) {
   const setValue = useCallback(
     value => {
       try {
-        if (!window.localStorage) return;
+        if (isServer()) return;
         const valueToStore =
           value instanceof Function ? value(storedValue) : value;
         setStoredValue(valueToStore);

@@ -3,7 +3,7 @@ import { useCallback, useReducer } from "react";
 // Reducer actions logger
 const logger = (action) => console.info("ACTION:: ", action);
 
-// Enhanced reducer with logger and thunk
+// HOOK
 const useEnhancedReducer = (reducer, initialState) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 

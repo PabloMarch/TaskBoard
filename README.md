@@ -17,7 +17,7 @@ Regarding to the requirements:
       * Pixel perfect not Implemented. I prefer to pay more attention to functionality. It is time consumming so I focused on more challenge tasks
 - [x] Image input/upload to task via UI. Click the camera button to enter the system file picker, and place images next to it (overflow creates the scrollbar).
 - [x] Local image deletion over via the UI.
-- [ ] Ensure the task card component can scale within the bounds of possible variable-length data attributes (title, date, image list). You can take the width of a card overall to be fixed & the height to be variable up to a reasonable max-height.
+- [x] Ensure the task card component can scale within the bounds of possible variable-length data attributes (title, date, image list). You can take the width of a card overall to be fixed & the height to be variable up to a reasonable max-height.
 - [x] Display a simple/convienent feedback mechanism so a user would know when the image upload completed.
 - [x] Capture error states & display them in the UI in a simple/convienent way. 
 
@@ -62,6 +62,7 @@ Regarding to the requirements:
 - Convert API call from `import` to fetch (out of scope)
 - Install BundleAnalyzed
 - Import inline SVGs
+- Fix undefined `window` issue from SSR caused by local storage
 - Theme
   1. Replace pixels units for a relatives (rem|em|%)
   2. Create own theme context
@@ -74,3 +75,4 @@ Regarding to the requirements:
 - Create centralize animations on theme and use `react-spring` (out of scope)
 - Adds comments to the app
 - Remove `styled-compenents` SSR warning
+- Save only images ID's on localstorage

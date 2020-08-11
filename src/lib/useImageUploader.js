@@ -11,6 +11,7 @@ const initialState = {
   error: null
 };
 
+// HOOK
 const uploaderReducer = (state, action) => {
   const { type, payload } = action;
 
