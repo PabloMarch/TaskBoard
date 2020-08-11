@@ -14,7 +14,9 @@ Please see TODO notes at bottom.
 ## NOTES
 Regarding to the requirements:
 - [ ] Create a task card component that conforms pixel-perfectly to the design spec.
-      * Pixel perfect not Implemented. I prefer to pay more attention to functionality. It is time consumming so I focused on more challenge tasks
+  + Pixel perfect not Implemented.
+  + I prefer to pay more attention to functionality.
+  + It is time consumming so I focused on more challenge tasks
 - [x] Image input/upload to task via UI. Click the camera button to enter the system file picker, and place images next to it (overflow creates the scrollbar).
 - [x] Local image deletion over via the UI.
 - [x] Ensure the task card component can scale within the bounds of possible variable-length data attributes (title, date, image list). You can take the width of a card overall to be fixed & the height to be variable up to a reasonable max-height.
@@ -26,14 +28,14 @@ Regarding to the requirements:
 - [x] The page needs to render server side via next.js
 - [x] Your task component card needs to use CSS grid.
 - [x] All components should be function-based unless there is a limitation that could only be handled by a class-based component. If/when this is the case, your reasoning for doing so should be clearly defined in a comment block.
-      * Only the _Document.js is a class as `nextjs` recommend.
+  + Only the _Document.js is a class as `nextjs` recommend.
 - [x] UI should support the addition/deletion of an image to the task & persistance via the API. However uploading to the browser locally is an acceptable alternative.
-      * `localstorage` was implemented for presistance when page reload
-      * API connection successful
+  + `localstorage` was implemented for presistance when page reload
+  + API connection successful
 - [x] Root application state needs to be managed in a useReducer hook.
 - [x] You need to create your own middleware for the useReducer hook to handle async actions & API calls, along with a console logger to view actions/payloads. 
 - [x] Think through & capture possible error states in the UI. Explain the error states you see possible in the application in a central comment block & how you'd plan to handle them.
-      * Error handling must be improved but it was put out of scope
+  + Error handling must be improved but it was put out of scope
 
 
 ## Used Packages
