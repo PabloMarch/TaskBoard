@@ -1,11 +1,11 @@
 import styled, { css } from "styled-components";
 
 // COMPONENT
-const Typography = ({ children, component, screenReader, ...rest }) => {
+const Typography = ({ children, className, component, screenReader, ...rest }) => {
   const Component = component || "span";
 
   return (
-    <Component {...rest}>
+    <Component className={className} {...rest}>
       {children}
     </Component>
   )

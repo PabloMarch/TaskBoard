@@ -11,12 +11,24 @@ const initialState = {
   error: null
 };
 
+// UTILS
+// format image raw file
+const proccessImages = (files) => (
+  files.map(
+    (file) => {
+      const name = uuidv4();
+      const ext = file.name.substring(file.name.lastIndexOf('.'));
+      return new File([file], `${name}${ext}`, { type: file.type })
+    }
+  )
+);
+
 // HOOK
 const uploaderReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "FETCHING":
+    case "UPLOADING":
       return {
         ...state,
         loading: true,
@@ -38,7 +50,7 @@ const uploaderReducer = (state, action) => {
         ...initialState,
         error: payload.error,
       }
-    case 'COMPLETE':
+    case 'END_QUEUE':
       return initialState;
     default:
       return state;
@@ -49,23 +61,16 @@ const useImageUploader = () => {
   const [state, dispatch] = useEnhancedReducer(uploaderReducer, initialState);
   const { queue } = state;
 
-  // format image raw file
-  const proccessImages = (files) => (
-    files.map(
-      (file) => {
-        const name = uuidv4();
-        const ext = file.name.substring(file.name.lastIndexOf('.'));
-        return new File([file], `${name}${ext}`, { type: file.type })
-      }
-    )
-  );
-
   // add multiple images to the queue
   const startUpload = useCallback(
     (files) => {
       const arrFiles = Array.from(files);
       const queue = proccessImages(arrFiles);
-      dispatch({ type: "SET_QUEUE", payload: { queue } });
+      
+      dispatch({
+        type: "SET_QUEUE",
+        payload: { queue }
+      });
     },
     [dispatch]
   );
@@ -73,30 +78,35 @@ const useImageUploader = () => {
   // upload image to the API
   const uploadImage = useCallback(
     (file) => {
-      dispatch({ type: "FETCHING" });
+      dispatch({ type: "UPLOADING" });
 
       const newQueue = queue.filter(curr => curr.name !== file.name);
       const data = new FormData();
       data.append("file", file, uuidv4());
 
-      // dispatch({
-      //   type: "UPLOADED",
-      //   payload: {
-      //     image: {
-      //       "id": uuidv4(),
-      //       "content_type":"jpg",
-      //       "metadata":null,
-      //       "resource_url":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a.jpg",
-      //       "size_urls":{
-      //          "small":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a.jpg",
-      //          "medium":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a@2x.jpg",
-      //          "large":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a@3x.jpg"
-      //       }
-      //     },
-      //     queue: newQueue,
-      //   } 
-      // });
-      // return;
+      // SIMULATE QUERY
+      dispatch({
+        type: "UPLOADED",
+        payload: {
+          image: {
+            "id": uuidv4(),
+            "content_type":"jpg",
+            "metadata":null,
+            "resource_url":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a.jpg",
+            "size_urls":{
+               "small":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a.jpg",
+               "medium":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a@2x.jpg",
+               "large":"https://cdn.joinsaturn.com/task-images/5fceac02-ec85-41bb-9796-c3c712d8127a@3x.jpg"
+            }
+          },
+          queue: newQueue,
+        } 
+      });
+      setTimeout(() => {
+        if (newQueue.length < 1) dispatch({ type: "END_QUEUE" })
+      }, 10000);
+      return;
+      // SIMULATE QUERY
       
       axios({ ...UPLOAD_QUERY, data })
         .then((res) => {
@@ -108,9 +118,9 @@ const useImageUploader = () => {
               } 
             });
 
-            // fire complete action when no more images on queue
+            // fire END_QUEUE action when no more images on queue
             if (newQueue.length < 1) {
-              dispatch({ type: "COMPLETE" });
+              dispatch({ type: "END_QUEUE" });
             }
         })
         .catch((error) => dispatch({ type: "ERROR", payload: { error } }));

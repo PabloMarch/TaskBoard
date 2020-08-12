@@ -7,6 +7,7 @@ const Slider = ({ className, children }) => (
     <OverlayScrollbarsComponent
       options={{ className : "os-theme-light" }} 
     >
+      {console.log("RENDER::Slider")}
       {children}
     </OverlayScrollbarsComponent>
   </Container>

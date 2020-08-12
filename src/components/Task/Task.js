@@ -1,104 +1,150 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import { useLocalStorage, getStateFromLocalStorage } from "@/lib";
+import {
+  useEnhancedReducer,
+  useImageUploader,
+  useLocalStorage,
+  getStateFromLocalStorage,
+} from "@/lib";
 import {
   Button,
   Container,
   Cell,
-  Time,
   Image,
-  Input,
   Grid,
-  Typography,
   Uploader
 } from "@/ui";
+import reducer, {
+  ADD_IMAGES,
+  REMOVE_IMAGE,
+  TOGGLE_COMPLETE,
+  LOAD_STORAGE
+} from "./state";
 import Slider from "../Slider";
+import TaskHeader from "./TaskHeader";
 
 // COMPONENT
 const Task = memo(
   ({
     className,
     data,
-    disabled,
-    loading,
-    onLoadCachedImages,
-    onAttachImages,
-    onDetachImage,
-    onCompleteTask,
+    setNotification,
   }) => {
+    const [task, dispatch] = useEnhancedReducer(reducer, data);
+    const [response, startUploader] = useImageUploader();
+    const { images: uploadedImages, error, loading } = response;
+    // const [storedImage, storeTaskImages] = useLocalStorage(serverId, images);
     const {
       createdAt,
       images,
       isCompleted,
       serverId,
       title,
-    } = data;
-    const [storedImage, storeTaskImages] = useLocalStorage(serverId, images);
+    } = task;
 
-    // load images from local storage when app loads
-    useEffect(
-      () => {
-        const cachedImages = getStateFromLocalStorage(serverId);
-        if (!cachedImages) return;
-        onLoadCachedImages(serverId, cachedImages);
-      },
-      [serverId, onLoadCachedImages]
-    );
+    // load cached images
+    // const loadCachedImages = useCallback(
+    //   (taskId, images) => {
+    //     if (!images.length) return;
+    //     dispatch({
+    //       type: LOAD_STORAGE,
+    //       payload: {
+    //         taskId,
+    //         images
+    //       }
+    //     });
+    //   },
+    //   [dispatch]
+    // );
 
-    // store/remove image from localstorage when an image is updated
-    useEffect(
-      () => {
-        storeTaskImages(images);
-      },
-      [serverId, images, storedImage, storeTaskImages]
-    );
+    // HANDLERS
 
     // mark task as complete
-    const handleComplete  = () => {
-      onCompleteTask(serverId);
-    };
+    const handleComplete  = useCallback(
+      () => {
+        dispatch({ type: TOGGLE_COMPLETE });
+      },
+      [dispatch]
+    );
 
     // starts image uploader and load them on UI
     const handleImageUpload = (evt) => {
       const { files } = evt.target;
-      onAttachImages(serverId, files);
+      startUploader(files);
     };
 
     // unattach image from task
     // TODO: remove from DB
     const handleImageRemove = (imgId) => {
-      onDetachImage(serverId, imgId);
+      dispatch({
+        type: REMOVE_IMAGE,
+        payload: { imgId }
+      });
     };
+    
+    // SIDE-EFFECTS
+    
+    // add uploaded images to the store when completed
+    useEffect(
+      () => {
+        if (!uploadedImages.length) return;
+        dispatch({
+          type: ADD_IMAGES,
+          // Saturn API only allow to one upload per request
+          payload: { images: [uploadedImages[0]] } 
+        });
+      },
+      [uploadedImages, dispatch]
+    );
 
+    // error callback
+    useEffect(
+      () => {
+        setNotification(error);
+      },
+      [error, setNotification]
+    );
+
+    // load images from local storage when app loads
+    // useEffect(
+    //   () => {
+    //     const cachedImages = getStateFromLocalStorage(serverId);
+    //     if (!cachedImages) return;
+    //     onLoadCachedImages(serverId, cachedImages);
+    //   },
+    //   [serverId, onLoadCachedImages]
+    // );
+
+    // store/remove image from localstorage when an image is updated
+    // useEffect(
+    //   () => {
+    //     storeTaskImages(images);
+    //   },
+    //   [serverId, images, storedImage, storeTaskImages]
+    // );
+
+    // RENDER
     // just to check the renders
-    // console.log("RENDER:Task:: ", serverId);
+    console.log("RENDER:memo:Task:: ", serverId);
 
     return (
       <Container component="article" variant="card" className={className}>
         <Grid columns={12}>
           <Cell width={12}>
-            <Container component="header" className="header">
-              <Image alt="Task Detail" src="/images/computer.svg" />
-              <Container>
-                <Typography component="h1" itemProp="headline">{title}</Typography>
-                <Time time={createdAt} itemProp="dateCreated" />
-                <Input
-                  type="radio"
-                  checked={isCompleted}
-                  onClick={handleComplete}
-                  readOnly
-                />
-              </Container>
-            </Container>
-
+            <TaskHeader
+              time={createdAt}
+              headline={title}
+              isCompleted={isCompleted}
+              handleComplete={handleComplete}
+            />
             <Slider className="slider">
               <Uploader
                 onChange={handleImageUpload}
                 loading={loading}
-                disabled={disabled}
+                disabled={loading}
                 variant="photo"
               />
-              {storedImage.map(({ id, size_urls, resource_url }) => (
+              {images.map(({ id, size_urls, resource_url }) => (
                 <Container key={id} component="figure">
                   <Button
                     icon="close"

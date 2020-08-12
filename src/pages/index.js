@@ -1,9 +1,9 @@
 import Layout from "../components/Layout";
-import TasksBoard from "../components/TasksBoard";
+import Board from "../components/Board";
 
 const Index = ({ tasks }) => (
   <Layout>
-    <TasksBoard data={tasks} />
+    <Board data={tasks} />
   </Layout>
 );
 

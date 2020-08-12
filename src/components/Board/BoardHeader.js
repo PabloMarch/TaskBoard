@@ -3,9 +3,10 @@ import { Typography } from "@/ui";
 
 // COMPONENT
 // example use of memo() when the component almost never change
-const MemoizedTaskHeader = memo(
+const BoardHeader = memo(
   ({ error }) => (
     <>
+      {console.log("RENDER::memo:BoardHeader")}
       <Typography component="h1" screenReader>Images Task Board</Typography>
       {error && (
         <Typography component="label" error>
@@ -16,4 +17,4 @@ const MemoizedTaskHeader = memo(
   )
 );
 
-export default MemoizedTaskHeader;
+export default BoardHeader;
