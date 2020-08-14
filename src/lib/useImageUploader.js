@@ -104,7 +104,7 @@ const useImageUploader = () => {
       });
       setTimeout(() => {
         if (newQueue.length < 1) dispatch({ type: "END_QUEUE" })
-      }, 10000);
+      }, 1000);
       return;
       // SIMULATE QUERY
       

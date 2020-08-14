@@ -6,6 +6,8 @@ import TaskHeader from "./BoardHeader";
 const Board = ({ data = [] }) => {
   const [notification, setNotification] = useState(null);
 
+  // RENDER
+
   // just to check the renders
   console.log("RENDER::Board");
 

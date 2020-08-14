@@ -32,30 +32,10 @@ const Task = memo(
   }) => {
     const [task, dispatch] = useEnhancedReducer(reducer, data);
     const [response, startUploader] = useImageUploader();
-    const { images: uploadedImages, error, loading } = response;
-    // const [storedImage, storeTaskImages] = useLocalStorage(serverId, images);
-    const {
-      createdAt,
-      images,
-      isCompleted,
-      serverId,
-      title,
-    } = task;
+    const [imagesCached, cacheImages] = useLocalStorage(data.serverId, data.images);
+    const { loading, error, images: imagesUploaded } = response;
+    const { createdAt, images, isCompleted, serverId, title } = task;
 
-    // load cached images
-    // const loadCachedImages = useCallback(
-    //   (taskId, images) => {
-    //     if (!images.length) return;
-    //     dispatch({
-    //       type: LOAD_STORAGE,
-    //       payload: {
-    //         taskId,
-    //         images
-    //       }
-    //     });
-    //   },
-    //   [dispatch]
-    // );
 
     // HANDLERS
 
@@ -82,19 +62,20 @@ const Task = memo(
       });
     };
     
+
     // SIDE-EFFECTS
     
     // add uploaded images to the store when completed
     useEffect(
       () => {
-        if (!uploadedImages.length) return;
+        if (!imagesUploaded.length) return;
         dispatch({
           type: ADD_IMAGES,
           // Saturn API only allow to one upload per request
-          payload: { images: [uploadedImages[0]] } 
+          payload: { images: [imagesUploaded[0]] } 
         });
       },
-      [uploadedImages, dispatch]
+      [imagesUploaded, dispatch]
     );
 
     // error callback
@@ -106,24 +87,31 @@ const Task = memo(
     );
 
     // load images from local storage when app loads
-    // useEffect(
-    //   () => {
-    //     const cachedImages = getStateFromLocalStorage(serverId);
-    //     if (!cachedImages) return;
-    //     onLoadCachedImages(serverId, cachedImages);
-    //   },
-    //   [serverId, onLoadCachedImages]
-    // );
+    useEffect(
+      () => {
+        const cachedImages = getStateFromLocalStorage(serverId);
+        if (!cachedImages) return;
+
+        dispatch({
+          type: LOAD_STORAGE,
+          payload: { images: cachedImages }
+        });
+      },
+      [serverId, dispatch]
+    );
 
     // store/remove image from localstorage when an image is updated
-    // useEffect(
-    //   () => {
-    //     storeTaskImages(images);
-    //   },
-    //   [serverId, images, storedImage, storeTaskImages]
-    // );
+    useEffect(
+      () => {
+        if (!images.length) return;
+        cacheImages(images);
+      },
+      [images, cacheImages]
+    );
+
 
     // RENDER
+
     // just to check the renders
     console.log("RENDER:memo:Task:: ", serverId);
 
@@ -144,7 +132,7 @@ const Task = memo(
                 disabled={loading}
                 variant="photo"
               />
-              {images.map(({ id, size_urls, resource_url }) => (
+              {imagesCached.map(({ id, size_urls, resource_url }) => (
                 <Container key={id} component="figure">
                   <Button
                     icon="close"
